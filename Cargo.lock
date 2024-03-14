@@ -306,6 +306,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "axum-typed-routing-macros"
+version = "0.1.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "432e43a01aab7e9d172e3822f299e744f140970a8a15146304f2bca43d3bf3c2"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn 2.0.48",
+]
+
+[[package]]
 name = "backtrace"
 version = "0.3.69"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1409,6 +1420,7 @@ dependencies = [
  "axum",
  "axum-client-ip",
  "axum-extra",
+ "axum-typed-routing-macros",
  "bytes",
  "chrono",
  "cors",

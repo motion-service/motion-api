@@ -20,7 +20,7 @@ handlebars = "5.1.0"
 futures-util = "0.3.30"
 url = "2.5.0"
 bytes = "1.5.0"
-futures = "0.3.30"
+futures = { version =  "0.3.30" }
 axum = "0.7.4"
 socketioxide = "0.10.2"
 tracing = "0.1.40"
@@ -35,3 +35,4 @@ tower-cookies = "0.10.0"
 axum-extra = "0.9.2"
 redis = { version = "0.24.0", features = [ "cluster","cluster-async","aio","tokio-comp" ] }
 async-std = "1.12.0"
+axum-typed-routing-macros = "=0.1.2"

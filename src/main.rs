@@ -2,12 +2,7 @@
 
 use std::collections::HashMap;
 use std::net::SocketAddr;
-use std::sync::{Arc, RwLock};
-use axum::{ ServiceExt,};
-use axum::handler::Handler;
-use futures_util::SinkExt;
-use tower_cookies::{Cookies};
-
+use std::sync::{Arc, Mutex};
 use tracing_subscriber::FmtSubscriber;
 use crate::app::App;
 use crate::db::db::DB;
@@ -24,9 +19,8 @@ mod app;
 //TODO create list variable on AppState with contains Binary struct
 pub struct AppState {
     db: DB,
-    cookies: Cookies,
-    page: Arc<RwLock<HashMap<String, Page>>>,
-    users: Vec<User>
+    page: Arc<Mutex<HashMap<String, Vec<Page>>>>,
+    users: Arc<Mutex<Vec<User>>>,
 }
 
 #[tokio::main]

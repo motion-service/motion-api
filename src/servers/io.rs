@@ -1,18 +1,14 @@
 use std::str::FromStr;
-use std::sync::Arc;
-use std::thread;
 use std::time::Duration;
-use axum::extract::{Request, State};
+use axum::extract::{Request};
 use axum::http::{Method, Uri};
 use socketioxide::{
-    extract::{AckSender, Bin, Data, SocketRef},
-    SocketIo,
+    extract::{Bin, Data, SocketRef},
 };
     
 use serde_json::Value;
 use serde_json::Value::String;
 use tracing::{error, info};
-use crate::AppState;
 
 pub fn on_connect(socket: SocketRef, Data(data): Data<Value>) {
     let ip_address = std::env::var("IP_ADDRESS").expect("IP_ADDRESS must be set.");
@@ -44,7 +40,7 @@ pub fn on_connect(socket: SocketRef, Data(data): Data<Value>) {
 
             Request::builder()
                 .method(Method::POST)
-                .uri(uri)  // 변환된 URI를 사용
+                .uri(uri)
                 .header("content-type", "application/json")
                 .body(serde_json::to_vec(&data).unwrap())
                 .unwrap();
