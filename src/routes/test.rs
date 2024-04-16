@@ -2,8 +2,6 @@ use std::sync::Arc;
 use axum::extract::State;
 use axum::{Json, response::IntoResponse};
 use axum_client_ip::InsecureClientIp;
-use async_std::sync::RwLock;
-use redis::{AsyncCommands, Commands};
 use crate::AppState;
 
 pub async fn test_post_handler(State(app_state): State<Arc<AppState>>, _: InsecureClientIp) -> impl IntoResponse {

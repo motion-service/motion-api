@@ -1,1 +1,1 @@
-pub mod db_error;
+mod error;
