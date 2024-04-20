@@ -11,3 +11,4 @@ pub mod prop;
 pub mod content;
 pub mod block_data;
 pub mod words;
+pub mod table;
