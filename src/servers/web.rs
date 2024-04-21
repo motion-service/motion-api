@@ -5,6 +5,9 @@ use std::sync::{Arc};
 use axum::{routing::get, ServiceExt};
 use axum::routing::{delete, post};
 use axum_client_ip::SecureClientIpSource;
+use serde_json::Value;
+use socketioxide::extract::SocketRef;
+use socketioxide::SocketIo;
 
 use tower::ServiceBuilder;
 use tower_cookies::CookieManagerLayer;
@@ -18,6 +21,7 @@ use crate::routes::client::page_route::{bread_crumb, create_page, delete_page, e
 use crate::routes::editor::block_route::{create_block, delete_block, edit_block, load_blocks};
 use crate::routes::editor::style_route::{edit_style, load_style};
 use crate::routes::editor::user_route::{get_guests, get_members};
+use crate::servers::socket::on_connect;
 
 pub struct Server {}
 
@@ -25,6 +29,10 @@ impl Server {
     //TODO check out https://github.com/keyosk/alien-metrics/blob/d8882dafac2cc2993582211960c673c1efa62882/src/main.rs#L92
     pub async fn run(){
         let db = Database::init().await;
+        let (layer, io) = SocketIo::builder().build_layer();
+
+        io.ns("/", on_connect);
+
 
         let app_state = Arc::new(AppState {
             db: db.clone(),
@@ -57,6 +65,7 @@ impl Server {
             .route("/editor/option/page/is_shared", post(get_shared))
 
             .with_state(app_state)
+            .layer(layer)
             .layer(CookieManagerLayer::new())
             .layer(CorsLayer::permissive())
             .layer(ServiceBuilder::new()
