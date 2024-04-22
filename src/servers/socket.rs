@@ -16,15 +16,17 @@ use crate::AppState;
 
 pub fn on_connect(socket: SocketRef, Data(data): Data<Value>) {
 
-    socket.on("message",
+    socket.on("connection",
               |socket: SocketRef, Data::<Value>(data), Bin(bin)| {
-                  socket.join("qwerqwer").expect("TODO: panic message");
+                  socket.join("test").unwrap();
+                  socket.emit("Joined","test"). unwrap();
+
               }
     );
 
     socket.on("chatting",
-              |socket: SocketRef, Data::<Value>(data), Bin(bin)| {
-                  socket.to("qwerqwer").emit("broadcast", "test").expect("TODO: panic message");
+              |socket: SocketRef, Data::<Value>(data)| {
+                  socket.within("test").emit("broadcast", "test").unwrap();
               }
     );
 }
