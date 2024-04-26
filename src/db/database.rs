@@ -7,19 +7,23 @@ use mongodb::bson::Document;
 use serde_json::{json,Value};
 use tracing::{info};
 use crate::{AppState};
+use crate::servers::socket::TestBlock;
 
 use crate::structs::default_block::DefaultBlock;
 use crate::structs::page::Page;
 use crate::structs::user::User;
 
 #[derive(Clone, Debug)]
-pub struct Database {
+pub struct
+Database {
     pub user_collection: Collection<User>,
     pub user_doc_collection: Collection<Document>,
     pub page_collection: Collection<Page>,
     pub page_doc_collection: Collection<Document>,
     pub block_collection: Collection<DefaultBlock>,
-    pub block_doc_collection: Collection<Document>
+    pub block_doc_collection: Collection<Document>,
+    pub test_block_collection: Collection<TestBlock>,
+    pub test_block_doc_collection: Collection<Document>
 }
 
 impl Database {
@@ -29,6 +33,7 @@ impl Database {
         let user_collection_name = std::env::var("MONGODB_USER_COLLECTION").unwrap();
         let page_collection_name = std::env::var("MONGODB_PAGE_COLLECTION").unwrap();
         let block_collection_name = std::env::var("MONGODB_BLOCK_COLLECTION").unwrap();
+        let test_block_collection_name = std::env::var("MONGODB_TEST_BLOCK_COLLECTION").unwrap();
 
         let mut client_options = ClientOptions::parse(mongodb_uri).await.unwrap();
         client_options.app_name = Some(database_name.to_string());
@@ -44,6 +49,8 @@ impl Database {
 
         let block_collection = database.collection(block_collection_name.as_str());
         let block_doc_collection = database.collection::<Document>(block_collection_name.as_str());
+        let test_block_collection = database.collection(test_block_collection_name.as_str());
+        let test_block_doc_collection = database.collection::<Document>(test_block_collection_name.as_str());
 
         info!("✅ Database connected successfully");
 
@@ -53,7 +60,9 @@ impl Database {
             page_collection: page_collection.clone(),
             page_doc_collection: page_doc_collection.clone(),
             block_collection: block_collection.clone(),
-            block_doc_collection: block_doc_collection.clone()
+            block_doc_collection: block_doc_collection.clone(),
+            test_block_collection: test_block_collection.clone(),
+            test_block_doc_collection: test_block_doc_collection.clone(),
         }
     }
 }
